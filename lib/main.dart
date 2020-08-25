@@ -20,9 +20,25 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
+
+  @override
+  void initState() {
+    super.initState();
+    checkFingerprint();
+  }
+
   final LocalAuthentication auth = LocalAuthentication();
   String _authorized = 'Not Authorized';
   bool _isAuthenticating = false;
+  bool fingerprint = false;
+
+  Future<void> checkFingerprint()async{
+   setState(() async{
+     fingerprint = await auth.canCheckBiometrics;
+   });
+  }
+
 
   Future<void> _authenticate() async {
     bool authenticated = false;
@@ -62,14 +78,14 @@ class _MyAppState extends State<MyApp> {
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                GestureDetector(
+                fingerprint? GestureDetector(
                   onTap: _authenticate,
                   child: Icon(
                     Icons.fingerprint,
                     size: 80,
                     color: _isAuthenticating ? Colors.red : Colors.green,
                   ),
-                ),
+                ) : Container(),
               ])),
     ));
   }
