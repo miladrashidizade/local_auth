@@ -34,9 +34,7 @@ class _MyAppState extends State<MyApp> {
   bool fingerprint = false;
 
   Future<void> checkFingerprint()async{
-   setState(() async{
      fingerprint = await auth.canCheckBiometrics;
-   });
   }
 
 
